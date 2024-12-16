@@ -2,7 +2,7 @@
 name = "django-better-azure-communication-email"
 version = "0.0.1"
 description = "A Better Django email backend for Azure Communication Email service."
-authors = ["Frederich Pedersen <frodo@hobbits.dk"]
+authors = ["Frederich Pedersen <frodo@hobbits.dk>"]
 maintainers = []
 license = "Apache-2.0"
 readme = "README.md"

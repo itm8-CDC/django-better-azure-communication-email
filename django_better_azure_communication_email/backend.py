@@ -10,7 +10,7 @@ from django.core.mail.backends.base import BaseEmailBackend
 from . import attachment, settings, utils
 
 
-logger = logging.getLogger('django_azure_communication_email')
+logger = logging.getLogger('django_better_azure_communication_email')
 
 
 class ACEmailBackend(BaseEmailBackend):
@@ -143,8 +143,13 @@ class ACEmailBackend(BaseEmailBackend):
     @staticmethod
     def _build_attachment(file: attachment.Attachment) -> Dict[str, str]:
         converter = attachment.get_converter(file)
-        return {
+        payload = {
             'name': converter.get_filename(),
             'contentType': converter.get_content_type(),
             'contentInBase64': converter.get_content(),
         }
+
+        content_id = converter.get_content_id()
+        if content_id:
+            payload["contentId"] = content_id
+        return payload

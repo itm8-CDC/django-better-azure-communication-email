@@ -25,6 +25,9 @@ class BaseConverter:
     def get_content_type(self) -> str:
         raise NotImplementedError
 
+    def get_content_id(self) -> str | None:
+        raise NotImplementedError
+
     def get_content(self) -> str:
         """Returns the base64 encoded string."""
         raise NotImplementedError
@@ -50,6 +53,9 @@ class MIMEBaseConverter(BaseConverter):
             return payload
 
         return base64.b64encode(payload.encode(self.get_charset())).decode()
+
+    def get_content_id(self) -> str | None:
+        return self.obj.get('content-id', None)
 
     def get_content_type(self) -> str:
         return self.obj.get_content_type()
@@ -78,6 +84,9 @@ class TupleBaseConverter(BaseConverter):
 
     def get_content_type(self) -> str:
         return self.obj[2]
+    
+    def get_content_id(self) -> None:
+        return None
 
     def get_content(self) -> str:
         content = self.obj[1]
