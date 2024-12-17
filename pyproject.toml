@@ -42,7 +42,6 @@ optional = true
 
 [tool.poetry.group.test.dependencies]
 pytest = "*"
-poetry-dynamic-versioning = "*"
 pytest-django = "^4.8.0"
 tox = "^4.15.1"
 django = ">=4.2"
@@ -53,6 +52,12 @@ optional = true
 [tool.poetry.group.dev.dependencies]
 isort = "^5.13"
 tox = "^4.14"
+
+[tool.poetry.group.release]
+optional = true
+
+[tool.poetry.group.release.dependencies]
+poetry-dynamic-versioning = "*"
 
 [tool.poetry-dynamic-versioning]
 enable = true
