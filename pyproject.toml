@@ -36,6 +36,7 @@ classifiers = [
 
 
 [tool.poetry.dependencies]
+python = ">=3.7"
 azure-identity = ">=1.15"
 azure-communication-email = ">=1.0"
 
