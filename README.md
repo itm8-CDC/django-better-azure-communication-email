@@ -1,4 +1,5 @@
 [![codecov](https://codecov.io/gh/itm8-CDC/django-better-azure-communication-email/graph/badge.svg?token=L167GIRS20)](https://codecov.io/gh/itm8-CDC/django-better-azure-communication-email)
+[![PyPI - Version](https://img.shields.io/pypi/v/django-better-azure-communication-email)](https://pypi.org/project/django-better-azure-communication-email/)
 
 # Django Better Azure Communication Email
 This is a fork from: https://github.com/retech-us/django-azure-communication-email
