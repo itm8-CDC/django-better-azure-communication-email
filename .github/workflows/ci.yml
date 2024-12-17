@@ -42,4 +42,11 @@ jobs:
       
       - name: Test with tox
         run: poetry run tox -e py${{ matrix.python-version }}-django-${{ matrix.django-version }}
+      
+      - name: Report to codecov
+        if: success()
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          env_vars: TOX_ENV
         
