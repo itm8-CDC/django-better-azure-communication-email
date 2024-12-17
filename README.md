@@ -3,6 +3,8 @@ This is a fork from: https://github.com/retech-us/django-azure-communication-ema
 
 A Django email backend for Azure Communication Email service.
 
+[![codecov](https://codecov.io/gh/itm8-CDC/django-better-azure-communication-email/graph/badge.svg?token=L167GIRS20)](https://codecov.io/gh/itm8-CDC/django-better-azure-communication-email)
+
 
 ## Installation
 Run the following on your system:
