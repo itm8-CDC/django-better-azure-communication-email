@@ -19,6 +19,7 @@ jobs:
   test:
     name: Unittest; Python ${{ matrix.python-version }}, Django ${{ matrix.django-version }}
     runs-on: ubuntu-latest
+    needs: pre-commit
     strategy:
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
