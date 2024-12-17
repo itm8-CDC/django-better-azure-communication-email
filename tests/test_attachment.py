@@ -61,7 +61,9 @@ class TestMimeBaseConverter(TestCase):
         filetype = "application/octet-stream"
 
         msg = MIMENonMultipart(*filetype.split("/"))
-        msg["Content-Disposition"] = f'attachment; filename="{filename}"' # noqa: E702
+        msg[
+            "Content-Disposition"
+        ] = f'attachment; filename="{filename}"'  # noqa: E702, E501
         msg.set_payload(payload)
 
         converter = attachment.MIMEBaseConverter(msg)
