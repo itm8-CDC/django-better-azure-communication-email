@@ -17,13 +17,13 @@ jobs:
 
       - name: Install dependencies
         run: poetry install --no-root
-      
+
       - name: Activate dynamic versioning
         run: poetry self add "poetry-dynamic-versioning[plugin]"
 
       - name: Poetry build
         run: poetry build
-      
+
       - name: PyPi publish
         run: poetry publish
         env:
