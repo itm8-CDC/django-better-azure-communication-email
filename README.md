@@ -1,10 +1,9 @@
+[![codecov](https://codecov.io/gh/itm8-CDC/django-better-azure-communication-email/graph/badge.svg?token=L167GIRS20)](https://codecov.io/gh/itm8-CDC/django-better-azure-communication-email)
+
 # Django Better Azure Communication Email
 This is a fork from: https://github.com/retech-us/django-azure-communication-email
 
 A Django email backend for Azure Communication Email service.
-
-[![codecov](https://codecov.io/gh/itm8-CDC/django-better-azure-communication-email/graph/badge.svg?token=L167GIRS20)](https://codecov.io/gh/itm8-CDC/django-better-azure-communication-email)
-
 
 ## Installation
 Run the following on your system:
@@ -32,16 +31,3 @@ following `settings.py` instead:
 
 Now, when you use `django.core.mail.send_mail`, Azure Communication Email
 service will send the messages by default.
-
-## Running Tests
-Tests is being converted to Tox atm, so no running tests.
-
-
-## Creating a Release
-
-To create a release:
-
-* Run `poetry version {patch|minor|major}` as explained in [the docs](https://python-poetry.org/docs/cli/#version).
-  This will update the version in `pyproject.toml`.
-* Commit that change and use git to tag that commit with a version that matches the pattern `v*.*.*`.
-* Push the tag and the commit (note some IDEs don't push tags by default).
