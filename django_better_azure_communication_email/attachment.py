@@ -2,15 +2,17 @@ import base64
 import re
 from email.charset import Charset
 from email.mime.base import MIMEBase
-from typing import Tuple, Union, Optional
+from typing import Optional, Tuple, Union
 
 
 Attachment = Union[MIMEBase, Tuple[str, Union[str, bytes], str]]
 
+
 class BaseConverter:
     """
     Base Converter meant to be used as a parent class.
-    Defines the default functions to ensure that if a new class doesn't have the required functions, it raises errors.
+    Defines the default functions to ensure that if a new
+    class doesn't have the required functions, it raises errors.
     """
 
     def __init__(self, obj: Attachment):
@@ -36,11 +38,11 @@ class BaseConverter:
 class MIMEBaseConverter(BaseConverter):
     """Class for MIME attachments."""
 
-    _RE_MIMETYPE = re.compile(r'^([A-Za-z0-9-./]+)')
-    _RE_CHARSET = re.compile(r'charset=.([A-Za-z0-9-./]+).')
+    _RE_MIMETYPE = re.compile(r"^([A-Za-z0-9-./]+)")
+    _RE_CHARSET = re.compile(r"charset=.([A-Za-z0-9-./]+).")
 
     def get_filename(self) -> str:
-        return self.obj.get_filename(failobj='untitled')
+        return self.obj.get_filename(failobj="untitled")
 
     def get_filetype(self) -> str:
         return self._RE_MIMETYPE.search(self.obj.get_content_type()).group(1)
@@ -48,14 +50,14 @@ class MIMEBaseConverter(BaseConverter):
     def get_content(self) -> str:
         payload = self.obj.get_payload()
 
-        encoding = str(self.obj.get('content-transfer-encoding', '')).lower()
-        if encoding == 'base64':
+        encoding = str(self.obj.get("content-transfer-encoding", "")).lower()
+        if encoding == "base64":
             return payload
 
         return base64.b64encode(payload.encode(self.get_charset())).decode()
 
     def get_content_id(self) -> Optional[str]:
-        return self.obj.get('content-id', None)
+        return self.obj.get("content-id", None)
 
     def get_content_type(self) -> str:
         return self.obj.get_content_type()
@@ -68,7 +70,7 @@ class MIMEBaseConverter(BaseConverter):
 
         if not charset:
             found = self._RE_CHARSET.search(self.obj.get_content_type())
-            charset = found.group(1) if found else 'ascii'
+            charset = found.group(1) if found else "ascii"
 
         return charset
 
@@ -84,7 +86,7 @@ class TupleBaseConverter(BaseConverter):
 
     def get_content_type(self) -> str:
         return self.obj[2]
-    
+
     def get_content_id(self) -> None:
         return None
 
@@ -102,4 +104,4 @@ def get_converter(attachment: Attachment) -> BaseConverter:
     elif isinstance(attachment, tuple):
         return TupleBaseConverter(attachment)
     else:
-        raise TypeError(f'Unsupported attachment type: {type(attachment)}')
+        raise TypeError(f"Unsupported attachment type: {type(attachment)}")

@@ -1,22 +1,25 @@
-from django.test import TestCase, override_settings
 from django.conf import settings
+from django.test import TestCase, override_settings
+
 
 _connection_str = (
-    'DefaultEndpointsProtocol=https;'
-    'AccountName=djangoace;'
-    'AccountKey=1234'
+    "DefaultEndpointsProtocol=https;",
+    "AccountName=djangoace;",
+    "AccountKey=1234",
 )
-_tenant_id = '1234'
-_client_id = '1234'
-_client_secret = '1234'
-_endpoint = 'https://endpoint'
-_key_credential = '1234'
+_tenant_id = "1234"
+_client_id = "1234"
+_client_secret = "1234"
+_endpoint = "https://endpoint"
+_key_credential = "1234"
 
 
 class TestSettings(TestCase):
     @override_settings(AZURE_COMMUNICATION_CONNECTION_STRING=_connection_str)
     def test_connection_string(self):
-        self.assertEqual(settings.AZURE_COMMUNICATION_CONNECTION_STRING, _connection_str)
+        self.assertEqual(
+            settings.AZURE_COMMUNICATION_CONNECTION_STRING, _connection_str
+        )
 
     @override_settings(AZURE_TENANT_ID=_tenant_id)
     def test_tenant_id(self):

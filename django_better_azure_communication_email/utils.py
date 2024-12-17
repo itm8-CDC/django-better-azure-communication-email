@@ -4,7 +4,7 @@ from typing import Tuple
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 
 
-_RE_SENDER_NAME = re.compile(r'^([^<>]+)\s<([^<>]+)>$')
+_RE_SENDER_NAME = re.compile(r"^([^<>]+)\s<([^<>]+)>$")
 
 
 def get_name_and_email(address) -> Tuple[str, str]:
@@ -14,7 +14,7 @@ def get_name_and_email(address) -> Tuple[str, str]:
     if custom_sender_name := _RE_SENDER_NAME.search(address):
         return custom_sender_name.groups()  # type: ignore
     else:
-        return '', address
+        return "", address
 
 
 def get_html_message(message: EmailMessage) -> str:
@@ -23,6 +23,6 @@ def get_html_message(message: EmailMessage) -> str:
     """
     if isinstance(message, EmailMultiAlternatives):
         for alt_msg, msg_type in message.alternatives:
-            if msg_type == 'text/html':
+            if msg_type == "text/html":
                 return alt_msg
-    return ''
+    return ""
