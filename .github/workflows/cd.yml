@@ -16,9 +16,15 @@ jobs:
           virtualenvs-in-project: true
 
       - name: Install dependencies
-        run: poetry install --only release
+        run: poetry install --no-root
 
-      - name: Publish to PyPI
-        run: poetry publish --build
+      - name: Activate dynamic versioning
+        run: poetry self add "poetry-dynamic-versioning[plugin]"
+
+      - name: Poetry build
+        run: poetry build
+
+      - name: PyPi publish
+        run: poetry publish
         env:
           POETRY_PYPI_TOKEN_PYPI: "${{ secrets.PYPI_API_TOKEN }}"
