@@ -62,6 +62,9 @@ poetry-dynamic-versioning = "*"
 [tool.poetry-dynamic-versioning]
 enable = true
 vcs = "git"
+latest-tag = true
+pattern = '(?P<base>\d+\.\d+\.\d+)'
+
 
 [build-system]
 requires = ["poetry-core"]
