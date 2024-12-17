@@ -53,6 +53,16 @@ optional = true
 isort = "^5.13"
 tox = "^4.14"
 
+[tool.poetry.group.release]
+optional = true
+
+[tool.poetry.group.release.dependencies]
+poetry-dynamic-versioning = ">=1.4.1"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
