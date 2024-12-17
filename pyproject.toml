@@ -47,6 +47,10 @@ optional = true
 pytest = "*"
 pytest-django = "^4.8.0"
 tox = "^4.15.1"
+django = ">=4.2"
+
+[tool.poetry.group.dev]
+optional = true
 
 [tool.poetry.group.dev.dependencies]
 isort = "^5.13"
