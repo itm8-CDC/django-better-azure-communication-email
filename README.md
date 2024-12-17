@@ -24,9 +24,9 @@ If you prefer to use Azure Active Directory authentication, you can use the
 following `settings.py` instead:
 
     EMAIL_BACKEND = 'django_better_azure_communication_email.EmailBackend'
-    
+
     AZURE_COMMUNICATION_ENDPOINT = '...'
-    
+
     # Note: make sure to set the following environment variables:
     # AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
 

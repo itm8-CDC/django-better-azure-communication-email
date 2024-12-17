@@ -1,25 +1,23 @@
-INSTALLED_APPS=["django_better_azure_communication_email"]
+INSTALLED_APPS = ["django_better_azure_communication_email"]
 
-DATABASES={
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": ":memory:",
     },
 }
 
-MIDDLEWARE_CLASSES=(
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+MIDDLEWARE_CLASSES = (
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
 )
 
-ROOT_URLCONF=''
+ROOT_URLCONF = ""
 
-SECRET_KEY='not-secret'
+SECRET_KEY = "not-secret"
 
 AZURE_COMMUNICATION_CONNECTION_STRING = (
-    'DefaultEndpointsProtocol=https;'
-    'AccountName=2321;'
-    'AccountKey=dfsw23'
+    "DefaultEndpointsProtocol=https;" "AccountName=2321;" "AccountKey=dfsw23"
 )
 AZURE_TENANT_ID = "2352"
 AZURE_CLIENT_ID = "3421"
