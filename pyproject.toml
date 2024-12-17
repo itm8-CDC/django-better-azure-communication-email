@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "django-better-azure-communication-email"
 version = "0.0.1"
-description = "A Better Django email backend for Azure Communication Email service."
+description = "A better Django email backend for Azure Communication Email service."
 authors = ["Frederich Pedersen <frodo@hobbits.dk>"]
 maintainers = []
 license = "Apache-2.0"
@@ -17,10 +17,6 @@ classifiers = [
     'Programming Language :: Python',
     'Topic :: Software Development :: Libraries :: Python Modules',
     'Framework :: Django',
-    'Framework :: Django :: 2.2',
-    'Framework :: Django :: 3.2',
-    'Framework :: Django :: 4.0',
-    'Framework :: Django :: 4.1',
     'Framework :: Django :: 4.2',
     'Framework :: Django :: 5.0',
     'Framework :: Django :: 5.1',
@@ -30,6 +26,7 @@ classifiers = [
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
 ]
+
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/itm8-CDC/django-better-azure-communication-email/issues"
 "Company Website" = "https://itm8.com/"
