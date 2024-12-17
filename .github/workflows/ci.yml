@@ -41,5 +41,5 @@ jobs:
           poetry install --only test
       
       - name: Test with tox
-        run: poetry run tox -e py${{ matrix.python-version }}-${{ matrix.django-version }}
+        run: poetry run tox -e py${{ matrix.python-version }}-django-${{ matrix.django-version }}
         
