@@ -2,7 +2,7 @@ import base64
 import re
 from email.charset import Charset
 from email.mime.base import MIMEBase
-from typing import Tuple, Union
+from typing import Tuple, Union, Optional
 
 
 Attachment = Union[MIMEBase, Tuple[str, Union[str, bytes], str]]
@@ -25,7 +25,7 @@ class BaseConverter:
     def get_content_type(self) -> str:
         raise NotImplementedError
 
-    def get_content_id(self) -> str | None:
+    def get_content_id(self) -> Optional[str]:
         raise NotImplementedError
 
     def get_content(self) -> str:
@@ -54,7 +54,7 @@ class MIMEBaseConverter(BaseConverter):
 
         return base64.b64encode(payload.encode(self.get_charset())).decode()
 
-    def get_content_id(self) -> str | None:
+    def get_content_id(self) -> Optional[str]:
         return self.obj.get('content-id', None)
 
     def get_content_type(self) -> str:

@@ -36,10 +36,16 @@ classifiers = [
 
 
 [tool.poetry.dependencies]
-python = ">=3.8"
-django = ">=2.2"
 azure-identity = ">=1.15"
 azure-communication-email = ">=1.0"
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest = "*"
+pytest-django = "^4.8.0"
+tox = "^4.15.1"
 
 [tool.poetry.group.dev.dependencies]
 isort = "^5.13"
@@ -63,3 +69,7 @@ combine_star = true
 include_trailing_comma = true
 remove_redundant_aliases = true
 skip_gitignore = true
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+pythonpath = ". django_better_azure_communication_email"
