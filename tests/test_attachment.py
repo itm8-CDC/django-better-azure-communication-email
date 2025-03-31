@@ -61,9 +61,9 @@ class TestMimeBaseConverter(TestCase):
         filetype = "application/octet-stream"
 
         msg = MIMENonMultipart(*filetype.split("/"))
-        msg[
-            "Content-Disposition"
-        ] = f'attachment; filename="{filename}"'  # noqa: E702, E501
+        msg["Content-Disposition"] = (
+            f'attachment; filename="{filename}"'  # noqa: E702, E501
+        )
         msg.set_payload(payload)
 
         converter = attachment.MIMEBaseConverter(msg)
@@ -92,14 +92,14 @@ class TestMimeBaseConverter(TestCase):
 
     def test_inline_image_content(self):
         payload = (
-            b"\x89\x50\x4E\x47\x0D\x0A\x1A\x0A"
-            b"\x00\x00\x00\x0D\x49\x48\x44\x52"
+            b"\x89\x50\x4e\x47\x0d\x0a\x1a\x0a"
+            b"\x00\x00\x00\x0d\x49\x48\x44\x52"
             b"\x00\x00\x00\x01\x00\x00\x00\x01"
-            b"\x08\x06\x00\x00\x00\x1F\x15\xC4"
-            b"\x89\x00\x00\x00\x0A\x49\x44\x41"
-            b"\x54\x78\x9C\x63\x60\x00\x00\x00"
-            b"\x02\x00\x01\xE5\x27\xD4\x0D\x00"
-            b"\x00\x00\x00\x49\x45\x4E\x44\xAE"
+            b"\x08\x06\x00\x00\x00\x1f\x15\xc4"
+            b"\x89\x00\x00\x00\x0a\x49\x44\x41"
+            b"\x54\x78\x9c\x63\x60\x00\x00\x00"
+            b"\x02\x00\x01\xe5\x27\xd4\x0d\x00"
+            b"\x00\x00\x00\x49\x45\x4e\x44\xae"
             b"\x42\x60\x82"
         )
         msg = MIMEImage(payload, _subtype="png")
