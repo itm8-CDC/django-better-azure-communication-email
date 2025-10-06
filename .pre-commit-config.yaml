@@ -24,14 +24,14 @@ repos:
         args: ['-iii', '-ll']  # Only report issues with high confidence and medium+ severity
 
   # Black - Python Code Formatter
-  - repo: https://github.com/psf/black
+  - repo: https://github.com/psf/black-pre-commit-mirror
     rev: 25.9.0
     hooks:
       - id: black
 
   # isort - Auto sorting of imports for consistency
   - repo: https://github.com/pycqa/isort
-    rev: 6.0.1
+    rev: 6.1.0
     hooks:
       - id: isort
         args: ["--profile", "black", "--python-version", "38"]
