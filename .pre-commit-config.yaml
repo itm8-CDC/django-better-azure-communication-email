@@ -31,7 +31,7 @@ repos:
 
   # isort - Auto sorting of imports for consistency
   - repo: https://github.com/pycqa/isort
-    rev: 6.1.0
+    rev: 7.0.0
     hooks:
       - id: isort
         args: ["--profile", "black", "--python-version", "38"]
