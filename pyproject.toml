@@ -45,6 +45,7 @@ pytest = "*"
 pytest-django = "^4.8.0"
 tox = "^4.15.1"
 django = ">=4.2"
+tomli = "^2.3.0"
 
 [tool.poetry.group.dev]
 optional = true
