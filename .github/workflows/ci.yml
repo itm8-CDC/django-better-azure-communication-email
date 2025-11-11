@@ -1,4 +1,4 @@
-name: Pre-commit & Unittests
+name: Unittests
 permissions:
   contents: read
 on:
@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
-        django-version: [42, 50, 51]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        django-version: [42, 50, 51, 52]
         exclude:
           - python-version: "3.8"
             django-version: 50
