@@ -18,7 +18,7 @@ repos:
 
   # Bandit - Security linter
   - repo: https://github.com/pycqa/bandit
-    rev: 1.9.3
+    rev: 1.9.4
     hooks:
       - id: bandit
         args: ['-iii', '-ll']  # Only report issues with high confidence and medium+ severity
@@ -31,7 +31,7 @@ repos:
 
   # isort - Auto sorting of imports for consistency
   - repo: https://github.com/pycqa/isort
-    rev: 7.0.0
+    rev: 8.0.1
     hooks:
       - id: isort
         args: ["--profile", "black", "--python-version", "38"]
