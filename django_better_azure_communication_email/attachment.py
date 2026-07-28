@@ -4,7 +4,6 @@ from email.charset import Charset
 from email.mime.base import MIMEBase
 from typing import Optional, Tuple, Union
 
-
 Attachment = Union[MIMEBase, Tuple[str, Union[str, bytes], str]]
 
 

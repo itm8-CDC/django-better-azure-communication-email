@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.test import TestCase, override_settings
 
-
 _connection_str = (
     "DefaultEndpointsProtocol=https;",
     "AccountName=djangoace;",

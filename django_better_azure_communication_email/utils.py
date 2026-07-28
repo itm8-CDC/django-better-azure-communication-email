@@ -3,7 +3,6 @@ from typing import Tuple
 
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 
-
 _RE_SENDER_NAME = re.compile(r"^([^<>]+)\s<([^<>]+)>$")
 
 
