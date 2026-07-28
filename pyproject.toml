@@ -37,6 +37,15 @@ python = "^3.8"
 azure-identity = ">=1.15"
 azure-communication-email = ">=1.0"
 
+[tool.poetry.extras]
+test = [
+    "pytest",
+    "pytest-django",
+    "tox",
+    "django",
+    "tomli",
+]
+
 [tool.poetry.group.test]
 optional = true
 
