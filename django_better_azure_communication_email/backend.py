@@ -9,7 +9,6 @@ from django.core.mail.backends.base import BaseEmailBackend
 
 from . import attachment, settings, utils
 
-
 logger = logging.getLogger("django_better_azure_communication_email")
 
 

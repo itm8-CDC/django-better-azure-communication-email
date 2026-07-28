@@ -1,6 +1,5 @@
 from django.conf import settings
 
-
 CONNECTION_STRING = getattr(
     settings,
     "AZURE_COMMUNICATION_CONNECTION_STRING",
