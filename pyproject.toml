@@ -43,7 +43,7 @@ django = { version = ">=4.2", optional = true }
 tomli = { version = "^2.3.0", optional = true }
 
 [tool.poetry.extras]
-test = ["pytest, pytest-django, tox, django, tomli"]
+test = ["pytest", "pytest-django", "tox", "django", "tomli"]
 
 [tool.poetry.group.dev]
 optional = true
