@@ -1,7 +1,13 @@
 import base64
+import unittest
+import warnings
+from unittest import mock
 
+import django
+from django.conf import settings
+from django.core import mail
 from django.core.mail import EmailMessage, EmailMultiAlternatives
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from django_better_azure_communication_email import EmailBackend
 
@@ -173,3 +179,175 @@ class TestEmailBackend(TestCase):
             },
         )
         self.assertIsNone(self.backend._client)
+
+
+_BACKEND_PATH = "django_better_azure_communication_email.EmailBackend"
+_HAS_MAILERS = django.VERSION >= (6, 1)
+_OPTION_CONN_STR = "endpoint=https://option.com/;accesskey=a"
+
+
+def _make_message(**kwargs):
+    return EmailMessage(
+        subject="Subject",
+        body="plain text",
+        from_email="Support <support@company.com>",
+        to=["Foo <foo@company.com>"],
+        **kwargs,
+    )
+
+
+class TestEmailBackendSetting(TestCase):
+    """Configuration through the EMAIL_BACKEND setting."""
+
+    @override_settings(EMAIL_BACKEND=_BACKEND_PATH)
+    def test_get_connection(self):
+        with warnings.catch_warnings():
+            # get_connection() is deprecated in Django 6.1+.
+            warnings.simplefilter("ignore")
+            backend = mail.get_connection()
+
+        self.assertIsInstance(backend, EmailBackend)
+        self.assertFalse(backend.fail_silently)
+
+    @override_settings(EMAIL_BACKEND=_BACKEND_PATH)
+    def test_get_connection_fail_silently(self):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            backend = mail.get_connection(fail_silently=True)
+
+        self.assertIsInstance(backend, EmailBackend)
+        self.assertTrue(backend.fail_silently)
+
+    @override_settings(EMAIL_BACKEND=_BACKEND_PATH)
+    def test_send_mail(self):
+        client = EmailClientStub()
+        with mock.patch(
+            "django_better_azure_communication_email.backend.EmailClient"
+        ) as email_client:
+            email_client.from_connection_string.return_value = client
+            sent = mail.send_mail(
+                "Subject",
+                "plain text",
+                "support@company.com",
+                ["foo@company.com"],
+            )
+
+        self.assertEqual(sent, 1)
+        self.assertEqual(len(client.messages), 1)
+
+    def test_no_deprecation_warnings(self):
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            backend = EmailBackend()
+            self.assertFalse(backend.fail_silently)
+            backend = EmailBackend(fail_silently=True)
+            self.assertTrue(backend.fail_silently)
+
+    @override_settings(AZURE_COMMUNICATION_TRACKING_DISABLED=True)
+    def test_tracking_disabled_option(self):
+        backend = EmailBackend(tracking_disabled=True)
+        conv_message = backend.convert_message(_make_message())
+        self.assertTrue(conv_message["userEngagementTrackingDisabled"])
+
+        backend = EmailBackend(tracking_disabled=False)
+        conv_message = backend.convert_message(_make_message())
+        self.assertNotIn("userEngagementTrackingDisabled", conv_message)
+
+
+@unittest.skipUnless(_HAS_MAILERS, "MAILERS requires Django 6.1+")
+@override_settings(
+    MAILERS={
+        "default": {"BACKEND": _BACKEND_PATH},
+        "azure": {
+            "BACKEND": _BACKEND_PATH,
+            "OPTIONS": {
+                "connection_string": _OPTION_CONN_STR,
+                "tracking_disabled": True,
+            },
+        },
+        "silent": {
+            "BACKEND": _BACKEND_PATH,
+            "OPTIONS": {"fail_silently": True},
+        },
+        "invalid": {
+            "BACKEND": _BACKEND_PATH,
+            "OPTIONS": {"unknown_option": True},
+        },
+    }
+)
+class TestMailersSetting(TestCase):
+    """Configuration through the MAILERS setting (Django 6.1+)."""
+
+    def test_default_mailer(self):
+        backend = mail.mailers.default
+
+        self.assertIsInstance(backend, EmailBackend)
+        self.assertEqual(backend.alias, "default")
+        self.assertFalse(backend.fail_silently)
+        # Falls back to the AZURE_* settings.
+        self.assertEqual(
+            backend._connection_string,
+            settings.AZURE_COMMUNICATION_CONNECTION_STRING,
+        )
+
+    def test_mailer_options(self):
+        backend = mail.mailers["azure"]
+
+        self.assertIsInstance(backend, EmailBackend)
+        self.assertEqual(backend.alias, "azure")
+        self.assertEqual(
+            backend._connection_string,
+            _OPTION_CONN_STR,
+        )
+        self.assertTrue(backend._tracking_disabled)
+
+    def test_mailer_fail_silently_option(self):
+        backend = mail.mailers["silent"]
+        self.assertTrue(backend.fail_silently)
+
+    def test_mailer_unknown_option(self):
+        with self.assertRaises(mail.InvalidMailer):
+            mail.mailers["invalid"]
+
+    def test_send_mail_using(self):
+        client = EmailClientStub()
+        with mock.patch(
+            "django_better_azure_communication_email.backend.EmailClient"
+        ) as email_client:
+            email_client.from_connection_string.return_value = client
+            sent = mail.send_mail(
+                "Subject",
+                "plain text",
+                "support@company.com",
+                ["foo@company.com"],
+                using="azure",
+            )
+
+        from_conn_str = email_client.from_connection_string
+        from_conn_str.assert_called_once_with(_OPTION_CONN_STR)
+        self.assertEqual(sent, 1)
+        self.assertEqual(len(client.messages), 1)
+        self.assertTrue(client.messages[0]["userEngagementTrackingDisabled"])
+
+    def test_email_message_send_using(self):
+        client = EmailClientStub()
+        with mock.patch(
+            "django_better_azure_communication_email.backend.EmailClient"
+        ) as email_client:
+            email_client.from_connection_string.return_value = client
+            sent = _make_message().send(using="azure")
+
+        self.assertEqual(sent, 1)
+        self.assertEqual(len(client.messages), 1)
+
+    def test_send_mail_using_fail_silently_not_supported(self):
+        # Django does not support fail_silently together with MAILERS.
+        with self.assertRaises(TypeError):
+            mail.send_mail(
+                "Subject",
+                "plain text",
+                "support@company.com",
+                ["foo@company.com"],
+                fail_silently=True,
+                using="azure",
+            )

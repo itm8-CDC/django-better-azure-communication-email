@@ -32,3 +32,36 @@ following `settings.py` instead:
 
 Now, when you use `django.core.mail.send_mail`, Azure Communication Email
 service will send the messages by default.
+
+## Using `MAILERS` (Django 6.1+)
+Django 6.1 introduced the [`MAILERS`](https://docs.djangoproject.com/en/6.1/topics/email/)
+setting, which deprecates `EMAIL_BACKEND`. Both are supported. With `MAILERS`,
+the backend can be configured through `OPTIONS`:
+
+    MAILERS = {
+        "default": {
+            "BACKEND": "django_better_azure_communication_email.EmailBackend",
+            "OPTIONS": {
+                "connection_string": "...",
+            },
+        },
+    }
+
+Available `OPTIONS` (each one falls back to the matching setting when not
+given):
+
+| Option              | Fallback setting                         |
+|---------------------|------------------------------------------|
+| `connection_string` | `AZURE_COMMUNICATION_CONNECTION_STRING`  |
+| `endpoint`          | `AZURE_COMMUNICATION_ENDPOINT`           |
+| `key_credential`    | `AZURE_KEY_CREDENTIAL`                   |
+| `tenant_id`         | `AZURE_TENANT_ID`                        |
+| `client_id`         | `AZURE_CLIENT_ID`                        |
+| `client_secret`     | `AZURE_CLIENT_SECRET`                    |
+| `tracking_disabled` | `AZURE_COMMUNICATION_TRACKING_DISABLED`  |
+| `fail_silently`     | (defaults to `False`)                    |
+
+Note: Django does not allow the `fail_silently` argument together with
+`using` (e.g. `send_mail(..., using="default", fail_silently=True)` raises a
+`TypeError`). If you need a mailer that fails silently, set
+`"fail_silently": True` in its `OPTIONS` instead.
