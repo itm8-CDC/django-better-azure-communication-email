@@ -13,7 +13,13 @@ logger = logging.getLogger("django_better_azure_communication_email")
 
 
 class ACEmailBackend(BaseEmailBackend):
-    """A Django Email backend that uses Azure Communication Email service."""
+    """A Django Email backend that uses Azure Communication Email service.
+
+    Can be configured either through the ``EMAIL_BACKEND`` setting or, with
+    Django 6.1+, through the ``MAILERS`` setting. Options passed to the
+    constructor (e.g. ``MAILERS[alias]["OPTIONS"]``) take precedence over
+    the ``AZURE_*`` settings.
+    """
 
     def __init__(
         self,
@@ -24,10 +30,17 @@ class ACEmailBackend(BaseEmailBackend):
         client_secret: Optional[str] = None,
         endpoint: Optional[str] = None,
         key_credential: Optional[str] = None,
-        fail_silently=False,
+        tracking_disabled: Optional[bool] = None,
+        fail_silently: bool = False,
         **kwargs,
     ) -> None:
-        super().__init__(fail_silently=fail_silently, **kwargs)
+        # fail_silently is handled here instead of being passed on to
+        # BaseEmailBackend, as Django 6.1+ deprecates it there and rejects it
+        # as an unknown option when the backend is created from MAILERS.
+        # Remaining kwargs (e.g. Django 6.1+ "alias") are passed on so that
+        # Django can validate them.
+        super().__init__(**kwargs)
+        self.fail_silently = fail_silently
 
         self._connection_string = (
             connection_string or settings.CONNECTION_STRING
@@ -37,6 +50,11 @@ class ACEmailBackend(BaseEmailBackend):
         self._client_secret = client_secret or settings.CLIENT_SECRET
         self._endpoint = endpoint or settings.ENDPOINT
         self._key_credential = key_credential or settings.KEY_CREDENTIAL
+        self._tracking_disabled = (
+            settings.TRACKING_DISABLED
+            if tracking_disabled is None
+            else tracking_disabled
+        )
 
         self._client: EmailClient | None = None
 
@@ -129,7 +147,7 @@ class ACEmailBackend(BaseEmailBackend):
             msg["headers"] = message.extra_headers
         if message.reply_to:
             msg["replyTo"] = self._build_recipients(message.reply_to)
-        if settings.TRACKING_DISABLED:
+        if self._tracking_disabled:
             msg["userEngagementTrackingDisabled"] = True
 
         return msg
